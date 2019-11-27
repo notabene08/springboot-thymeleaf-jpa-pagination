@@ -19,7 +19,13 @@ public class WebController {
     @GetMapping("/")
     public String index(Model model, @PageableDefault Pageable pageable) {
         Page<HeroFindAllResponseDto> pages = heroService.HeroFindAllResponse(pageable);
-        model.addAttribute("list", pages);
+        model.addAttribute("pages", pages);
+
+        int start = Math.max(1,pages.getNumber() - 2);
+        int last = Math.min(start + 6, pages.getTotalPages());
+
+        model.addAttribute("start", start);
+        model.addAttribute("last", last);
         return "index";
     }
 }
